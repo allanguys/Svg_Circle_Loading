@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Svg_Circle_Loading" />
+<meta name="keywords" content="Svg_Circle_Loading" />
+<title>Svg_Circle_Loading</title>
+<style type="text/css">
+  .svg_circle_box{width:50px;height:50px;position:relative; }
+  #scb_02{width:300px;height:300px}
+  .loading_font{position:absolute;width:100%;height:50px;top:50%;left:0;text-align:center;margin-top:-25px;line-height:50px}
+</style>
+</head>
+
+
+<body>
+    <div class="svg_circle_box" id="scb_01"><span class="loading_font"></span></div>    
+
+    <div class="svg_circle_box" id="scb_02"><span class="loading_font"></span></div>
+
+	<script src="http://ossweb-img.qq.com/images/js/zepto/zepto.min.js"></script>
+    <script type="text/javascript">
+
+function svg_circle_box(o) {
+    var node = null;
+    var percent = -1;
+    var Width = -1;
+    var Height = -1;
+    var boder = -1;
+    var font_class = '';
+    for (var i = 0; i < o.length; i++) {
+        node = o[i].node;
+        Width = $(node).width();
+        Height = $(node).height();
+        border = o[i].loadingWidth;
+        percent = o[i].percent;
+
+        $(node).append('<svg ><circle  fill="none" style="display:none;"></circle><circle  fill="none" style="display:none;"></circle></svg>');
+
+        if (o[i].font_class == '' || o[i].font_class == undefined) {
+            font_class = 'loading_font';
+        } else {
+            font_class = o[i].font_class;
+        };
+        if (o[i].font == '' || o[i].font == undefined) {
+           $(node).find('.' + font_class).html(percent);
+        } else {
+           $(node).find('.' + font_class).html(o[i].font);
+        }
+
+        S = $(node).find('svg');
+        C = $(node).find('svg circle');
+
+        S.css({
+            'position': 'relative',
+            'width': Width,
+            'height': Height
+        });
+
+
+        C.attr({
+            'cx': (Width) / 2,
+            'cy': (Height) / 2,
+            'stroke-width': border,
+            'r': Height / 2 - border / 2
+        }).css({
+            'display': 'block',
+            'position': 'absolute',
+            'top': '0',
+            'left': '0'
+        });
+        $(C[0]).attr({
+            'stroke': o[i].loadingBgColor
+        });
+        $(C[1]).attr({
+            'stroke-dasharray': (percent / 100) * (Math.PI * Height) - (border * 2) + ' ' + (Math.PI * Height),
+            'stroke': o[i].loadingColor
+        });
+        $(C[1]).css({
+            '-webkit-transform': 'matrix(0,-1,1,0,0,' + (Height) + ')'
+        })
+    };
+};
+svg_circle_box([{
+	//标签类名
+    'node': '#scb_01',
+    //边框宽度
+    'loadingWidth': 5,
+    //边框底色
+    'loadingBgColor': '#D1D3D7',
+    //边框进度颜色
+    'loadingColor': '#00A5E0',
+    //loading进度百分比值
+    'percent': 95,
+    //中间文字。可留空，默认为当前百分比文字
+    'font': '暂无',
+    //中间文字所在标签的类名。可留空，默认为loading_font
+    'font_class': 'loading_font' 
+},
+{'node':'#scb_02','loadingWidth':2,'loadingBgColor':'black','loadingColor':'red','percent':98,'font_class':'loading_font'}
+])
+
+      
+    </script>
+</body>
+
+</html>
+
